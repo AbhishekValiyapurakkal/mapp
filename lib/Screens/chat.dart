@@ -42,7 +42,6 @@ class CchatscreeSState extends State<ChatScreen> {
                       case ConnectionState.active:
                       case ConnectionState.done:
                         final data = snapshot.data?.docs;
-                        log('Data:${jsonEncode(data![0].data())}');
                         _list = data
                                 ?.map((e) => Message.fromJson(e.data()))
                                 .toList() ??
@@ -58,7 +57,7 @@ class CchatscreeSState extends State<ChatScreen> {
                             },
                           );
                         } else {
-                          return const Center(
+                          return Center(
                             child: Text('Say Hi!👋',
                                 style: TextStyle(fontSize: 20)),
                           );
