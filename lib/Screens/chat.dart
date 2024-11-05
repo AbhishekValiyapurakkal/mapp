@@ -1,8 +1,10 @@
-import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mapp/Api/apis.dart';
 import 'package:mapp/model/chat_user.dart';
 import 'package:mapp/model/message.dart';
@@ -19,54 +21,80 @@ class ChatScreen extends StatefulWidget {
 class CchatscreeSState extends State<ChatScreen> {
   List<Message> _list = [];
   final _textcontroller = TextEditingController();
+  bool _showEmoji = false, _isuploading = false;
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          elevation: 2,
-          automaticallyImplyLeading: false,
-          flexibleSpace: _appbar(),
-        ),
-        backgroundColor: const Color.fromARGB(255, 227, 242, 228),
-        body: Column(
-          children: [
-            Expanded(
-              child: StreamBuilder(
-                  stream: Apis.getAllMessages(widget.user),
-                  builder: (context, snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.waiting:
-                      case ConnectionState.none:
-                        return const SizedBox();
-                      case ConnectionState.active:
-                      case ConnectionState.done:
-                        final data = snapshot.data?.docs;
-                        _list = data
-                                ?.map((e) => Message.fromJson(e.data()))
-                                .toList() ??
-                            [];
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            elevation: 2,
+            automaticallyImplyLeading: false,
+            flexibleSpace: _appbar(),
+          ),
+          backgroundColor: const Color.fromARGB(255, 227, 242, 228),
+          body: Column(
+            children: [
+              Expanded(
+                child: StreamBuilder(
+                    stream: Apis.getAllMessages(widget.user),
+                    builder: (context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.waiting:
+                        case ConnectionState.none:
+                          return const SizedBox();
+                        case ConnectionState.active:
+                        case ConnectionState.done:
+                          final data = snapshot.data?.docs;
+                          _list = data
+                                  ?.map((e) => Message.fromJson(e.data()))
+                                  .toList() ??
+                              [];
 
-                        if (_list.isNotEmpty) {
-                          return ListView.builder(
-                            itemCount: _list.length,
-                            padding: EdgeInsets.only(top: 5),
-                            physics: BouncingScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              return MessageCard(message: _list[index]);
-                            },
-                          );
-                        } else {
-                          return Center(
-                            child: Text('Say Hi!👋',
-                                style: TextStyle(fontSize: 20)),
-                          );
-                        }
-                    }
-                  }),
-            ),
-            _chatinput()
-          ],
+                          if (_list.isNotEmpty) {
+                            return ListView.builder(
+                              reverse: true,
+                              itemCount: _list.length,
+                              padding: EdgeInsets.only(top: 5),
+                              physics: BouncingScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                return MessageCard(message: _list[index]);
+                              },
+                            );
+                          } else {
+                            return Center(
+                              child: Text('Say Hi!👋',
+                                  style: TextStyle(fontSize: 20)),
+                            );
+                          }
+                      }
+                    }),
+              ),
+              if (_isuploading)
+                const Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                      ),
+                    )),
+              _chatinput(),
+              //if (_showEmoji)
+              // SizedBox(
+              //   height: 35,
+              //   child: EmojiPicker(
+              //     textEditingController: _textcontroller,
+              //     config: Config(
+              //       columns: 7,
+              //       emojiSizeMax: 32 * (Platform.isIOS ? 1.30 : 1.0),
+              //     ),
+              //   ),
+              // )
+            ],
+          ),
         ),
       ),
     );
@@ -88,12 +116,12 @@ class CchatscreeSState extends State<ChatScreen> {
           ClipRRect(
             borderRadius: BorderRadius.circular(25),
             child: CachedNetworkImage(
-              width: 50,
-              height: 50,
-              imageUrl: widget.user.image,
-              placeholder: (context, url) => CircularProgressIndicator(),
-              errorWidget: (context, url, error) => Icon(Icons.error),
-            ),
+                width: 50,
+                height: 50,
+                imageUrl: widget.user.image,
+                errorWidget: (context, url, error) => const CircleAvatar(
+                      child: Icon(CupertinoIcons.person),
+                    )),
           ),
           SizedBox(
             width: 10,
@@ -134,30 +162,57 @@ class CchatscreeSState extends State<ChatScreen> {
                   borderRadius: BorderRadius.circular(15)),
               child: Row(
                 children: [
-                  IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.emoji_emotions,
-                        color: Colors.grey[600],
-                      )),
+                  // IconButton(
+                  //     onPressed: () {
+                  //       setState(() => _showEmoji = !_showEmoji);
+                  //     },
+                  //     icon: Icon(
+                  //       Icons.emoji_emotions,
+                  //       color: Colors.grey[600],
+                  //     )),
                   Expanded(
                       child: TextField(
                     controller: _textcontroller,
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
+                    onTap: () {
+                      FocusScope.of(context).unfocus();
+                      setState(() => _showEmoji = !_showEmoji);
+                    },
                     decoration: InputDecoration(
-                        hintText: 'Message',
+                        hintText: '  Message',
                         hintStyle: TextStyle(color: Colors.grey[600]),
                         border: InputBorder.none),
                   )),
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        final ImagePicker picker = ImagePicker();
+                        // pickig multiple images
+                        final List<XFile> images =
+                            await picker.pickMultiImage(imageQuality: 70);
+                        for (var i in images) {
+                          log('image path : ${i.path}');
+                          setState(() => _isuploading = true);
+                          await Apis.sendchatimage(widget.user, File(i.path));
+                          setState(() => _isuploading = false);
+                        }
+                      },
                       icon: Icon(
                         Icons.image,
                         color: Colors.grey[600],
                       )),
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        final ImagePicker picker = ImagePicker();
+                        final XFile? image = await picker.pickImage(
+                            source: ImageSource.camera, imageQuality: 70);
+                        if (image != null) {
+                          log('image path: ${image.path}');
+                          setState(() => _isuploading = true);
+                         await Apis.sendchatimage(widget.user, File(image.path));
+                         setState(() => _isuploading = false);
+                        }
+                      },
                       icon: Icon(
                         Icons.camera_alt_rounded,
                         color: Colors.grey[600],
@@ -174,7 +229,7 @@ class CchatscreeSState extends State<ChatScreen> {
             color: Colors.green[600],
             onPressed: () {
               if (_textcontroller.text.isNotEmpty) {
-                Apis.sendmessage(widget.user, _textcontroller.text);
+                Apis.sendmessage(widget.user, _textcontroller.text, Type.text);
                 _textcontroller.text = '';
               }
             },

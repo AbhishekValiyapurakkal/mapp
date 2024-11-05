@@ -94,17 +94,48 @@ class Apis {
         .snapshots();
   }
 
-  static Future<void> sendmessage(Chatuser chatUser, String msg) async {
+  static Future<void> sendmessage(
+      Chatuser chatUser, String msg, Type type) async {
     final time = DateTime.now().microsecondsSinceEpoch.toString();
     final Message message = Message(
         toid: chatUser.id,
         msg: msg,
         read: '',
-        type: Type.text,
+        type: type,
         sent: time,
         fromid: user.uid);
     final ref = firestore
         .collection('chats/${getconversationid(chatUser.id)}/messages/');
     await ref.doc(time).set(message.toJson());
+  }
+
+  static Future<void> updateMessageReadstatus(Message message) async {
+    firestore
+        .collection('chats/${getconversationid(message.fromid)}/messages/')
+        .doc(message.sent)
+        .update({'read': DateTime.now().microsecondsSinceEpoch.toString()});
+  }
+
+  //get only last message of a specific chat
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getLastMessages(
+      Chatuser user) {
+    return firestore
+        .collection('chats/${getconversationid(user.id)}/messages/')
+        .limit(1)
+        .orderBy('sent', descending: true)
+        .snapshots();
+  }
+
+  static Future<void> sendchatimage(Chatuser chatUser, File file) async {
+    final ext = file.path.split('.').last;
+    final ref = storage.ref().child(
+        'images/${getconversationid(chatUser.id)}/${DateTime.now().microsecondsSinceEpoch}.$ext');
+    await ref.putFile(file, SettableMetadata(contentType: 'image/$ext')).then(
+      (p0) {
+        log('Data Transferred:${p0.bytesTransferred / 1000}kb');
+      },
+    );
+    final imageUrl = await ref.getDownloadURL();
+    await sendmessage(chatUser, imageUrl, Type.image);
   }
 }
