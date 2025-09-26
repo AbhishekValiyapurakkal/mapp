@@ -28,7 +28,7 @@ class _viewprofileState extends State<viewprofile> {
           floatingActionButton: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
+              const Text(
                 'Joined on:',
                 style: TextStyle(
                     color: Colors.black87,
@@ -76,7 +76,7 @@ class _viewprofileState extends State<viewprofile> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         'About:',
                         style: TextStyle(
                             color: Colors.black87,

@@ -53,9 +53,9 @@ class _ChatCardState extends State<ChatCard> {
                           height: 55,
                           imageUrl: widget.user.image,
                           placeholder: (context, url) =>
-                              CircularProgressIndicator(),
+                              const CircularProgressIndicator(),
                           errorWidget: (context, url, error) =>
-                              Icon(Icons.error),
+                              const Icon(Icons.error),
                         ),
                       ),
                     ),
@@ -83,7 +83,7 @@ class _ChatCardState extends State<ChatCard> {
                             : Text(
                                 MyDateUtil.getlastmessagetime(
                                     context: context, time: _message!.sent),
-                                style: TextStyle(color: Colors.black54),
+                                style: const TextStyle(color: Colors.black54),
                               ),
                   );
                 },

@@ -53,11 +53,11 @@ class _HomeState extends State<Home> {
               automaticallyImplyLeading: false,
               title: _isSearching
                   ? TextField(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'name,E mail,...'),
                       autofocus: true,
-                      style: TextStyle(fontSize: 17, letterSpacing: 0.5),
+                      style: const TextStyle(fontSize: 17, letterSpacing: 0.5),
                       onChanged: (val) {
                         _searchlist.clear();
                         for (var i in list) {
@@ -72,7 +72,6 @@ class _HomeState extends State<Home> {
                               _searchlist;
                             });
                           }
-                          ;
                         }
                       },
                     )
@@ -106,7 +105,7 @@ class _HomeState extends State<Home> {
                             ),
                           ));
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.more_vert_rounded,
                       size: 30,
                     )),
@@ -122,7 +121,7 @@ class _HomeState extends State<Home> {
               onPressed: () {
                 _addChatUserDialog();
               },
-              child: Icon(Icons.add_comment),
+              child: const Icon(Icons.add_comment),
             ),
             body: StreamBuilder(
               stream: Apis.getMyUsersId(),
@@ -155,8 +154,8 @@ class _HomeState extends State<Home> {
                                   itemCount: _isSearching
                                       ? _searchlist.length
                                       : list.length,
-                                  padding: EdgeInsets.only(top: 5),
-                                  physics: BouncingScrollPhysics(),
+                                  padding: const EdgeInsets.only(top: 5),
+                                  physics: const BouncingScrollPhysics(),
                                   itemBuilder: (context, index) {
                                     return ChatCard(
                                         user: _isSearching
@@ -166,7 +165,7 @@ class _HomeState extends State<Home> {
                                   },
                                 );
                               } else {
-                                return Center(
+                                return const Center(
                                   child: Text(
                                     'No Connections found!',
                                     style: TextStyle(fontSize: 20),
@@ -188,7 +187,7 @@ class _HomeState extends State<Home> {
       context: context,
       builder: (context) => AlertDialog(
         contentPadding:
-            EdgeInsets.only(left: 24, right: 24, top: 20, bottom: 10),
+            const EdgeInsets.only(left: 24, right: 24, top: 20, bottom: 10),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: const Row(
           children: [
@@ -205,7 +204,7 @@ class _HomeState extends State<Home> {
           onChanged: (value) => email = value,
           decoration: InputDecoration(
               hintText: 'Email',
-              prefixIcon: Icon(
+              prefixIcon: const Icon(
                 Icons.email,
                 color: Colors.blueGrey,
               ),

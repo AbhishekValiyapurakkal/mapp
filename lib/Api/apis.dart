@@ -157,7 +157,7 @@ class Apis {
     log('\nUserids: $userIds');
     return firestore
         .collection('users')
-        .where('id', whereIn: userIds.isEmpty?['']:userIds)
+        .where('id', whereIn: userIds.isEmpty ? [''] : userIds)
         //.where('id', isNotEqualTo: user.uid)
         .snapshots();
   }

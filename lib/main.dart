@@ -16,7 +16,7 @@ void main() async {
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then(
     (value) {
       _initializeFirebase();
-      runApp(MaterialApp(
+      runApp(const MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Splashscreen(),
       ));

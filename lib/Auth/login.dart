@@ -26,14 +26,14 @@ class _loginState extends State<login> {
       final user = await google.signIn().catchError((error) {});
       if (user == null) return;
       final auth = await user.authentication;
-      final credential = await GoogleAuthProvider.credential(
+      final credential = GoogleAuthProvider.credential(
           accessToken: auth.accessToken, idToken: auth.idToken);
       await FirebaseAuth.instance.signInWithCredential(credential);
       if ((await Apis.userExists())) {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => Home(),
+              builder: (context) => const Home(),
             ));
       } else {
         Apis.createuser().then(
@@ -41,7 +41,7 @@ class _loginState extends State<login> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Home(),
+                  builder: (context) => const Home(),
                 ));
           },
         );
@@ -68,7 +68,7 @@ class _loginState extends State<login> {
       ),
       body: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 150,
           ),
           Center(
@@ -77,7 +77,7 @@ class _loginState extends State<login> {
                   height: 200,
                   child: Lottie.asset('lib/assets/Animation.json'))),
           //Image.asset('lib/image/bird.jpg'),
-          SizedBox(
+          const SizedBox(
             height: 10,
             width: 600,
           ),
@@ -86,13 +86,13 @@ class _loginState extends State<login> {
               googlesignin();
             },
             style: ElevatedButton.styleFrom(
-                maximumSize: Size(230, 50),
-                minimumSize: Size(230, 50),
+                maximumSize: const Size(230, 50),
+                minimumSize: const Size(230, 50),
                 backgroundColor: Colors.green[300],
                 elevation: 10,
                 shadowColor: Colors.black87,
-                shape: StadiumBorder()),
-            label: Text(
+                shape: const StadiumBorder()),
+            label: const Text(
               "Login with Google",
               style:
                   TextStyle(color: Colors.black, fontWeight: FontWeight.w600),

@@ -58,14 +58,14 @@ class CchatscreeSState extends State<ChatScreen> {
                             return ListView.builder(
                               reverse: true,
                               itemCount: _list.length,
-                              padding: EdgeInsets.only(top: 5),
-                              physics: BouncingScrollPhysics(),
+                              padding: const EdgeInsets.only(top: 5),
+                              physics: const BouncingScrollPhysics(),
                               itemBuilder: (context, index) {
                                 return MessageCard(message: _list[index]);
                               },
                             );
                           } else {
-                            return Center(
+                            return const Center(
                               child: Text('Say Hi!👋',
                                   style: TextStyle(fontSize: 20)),
                             );
@@ -124,7 +124,7 @@ class CchatscreeSState extends State<ChatScreen> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.arrow_back,
                         color: Colors.black54,
                       )),
@@ -140,7 +140,7 @@ class CchatscreeSState extends State<ChatScreen> {
                               child: Icon(CupertinoIcons.person),
                             )),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Column(
@@ -154,7 +154,7 @@ class CchatscreeSState extends State<ChatScreen> {
                             color: Colors.black87,
                             fontWeight: FontWeight.w500),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 2,
                       ),
                       Text(
@@ -244,7 +244,7 @@ class CchatscreeSState extends State<ChatScreen> {
                         Icons.camera_alt_rounded,
                         color: Colors.grey[600],
                       )),
-                  SizedBox(
+                  const SizedBox(
                     width: 2,
                   )
                 ],
@@ -252,7 +252,7 @@ class CchatscreeSState extends State<ChatScreen> {
             ),
           ),
           MaterialButton(
-            shape: CircleBorder(),
+            shape: const CircleBorder(),
             color: Colors.green[600],
             onPressed: () {
               if (_textcontroller.text.isNotEmpty) {
@@ -265,8 +265,8 @@ class CchatscreeSState extends State<ChatScreen> {
               }
             },
             minWidth: 0,
-            padding: EdgeInsets.only(top: 10, bottom: 10, right: 5, left: 10),
-            child: Icon(
+            padding: const EdgeInsets.only(top: 10, bottom: 10, right: 5, left: 10),
+            child: const Icon(
               Icons.send,
               color: Colors.white,
               size: 26,

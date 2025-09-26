@@ -57,7 +57,7 @@ class _profileState extends State<profile> {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => login(),
+                          builder: (context) => const login(),
                         ));
                   },
                 );
@@ -111,11 +111,11 @@ class _profileState extends State<profile> {
                               _showBottomsheet();
                             },
                             shape: const CircleBorder(),
+                            color: Colors.white,
                             child: const Icon(
                               Icons.edit,
                               color: Colors.green,
                             ),
-                            color: Colors.white,
                           ),
                         )
                       ],
@@ -212,14 +212,14 @@ class _profileState extends State<profile> {
       builder: (context) {
         return ListView(
           shrinkWrap: true,
-          padding: EdgeInsets.only(top: 30, bottom: 50),
+          padding: const EdgeInsets.only(top: 30, bottom: 50),
           children: [
             const Text(
               "Pick profile picture",
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Row(
@@ -227,9 +227,9 @@ class _profileState extends State<profile> {
               children: [
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        shape: CircleBorder(),
+                        shape: const CircleBorder(),
                         backgroundColor: Colors.white,
-                        fixedSize: Size(150, 60)),
+                        fixedSize: const Size(150, 60)),
                     onPressed: () async {
                       final ImagePicker picker = ImagePicker();
                       final XFile? image =
@@ -246,10 +246,10 @@ class _profileState extends State<profile> {
                     child: Image.asset('lib/image/add_image.png')),
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        minimumSize: Size(150, 60),
-                        shape: CircleBorder(),
+                        minimumSize: const Size(150, 60),
+                        shape: const CircleBorder(),
                         backgroundColor: Colors.white,
-                        fixedSize: Size(150, 60)),
+                        fixedSize: const Size(150, 60)),
                     onPressed: () async {
                       final ImagePicker picker = ImagePicker();
                       final XFile? image =
