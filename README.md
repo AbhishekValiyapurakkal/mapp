@@ -31,7 +31,7 @@ It allows users to register, log in, and chat with each other instantly with sec
 - **Flutter** – Frontend framework
 - **Firebase Authentication** – User login & signup
 - **Firebase Firestore** – Real-time database
-- **Firebase Storage** (optional) – For storing media files
+- **Firebase Storage**  – For storing media files
 
 ---
 
@@ -40,4 +40,5 @@ It allows users to register, log in, and chat with each other instantly with sec
 ### Clone the repository
 ```bash
 git clone https://github.com/AbhishekValiyapurakkal/mapp.git
+
 
