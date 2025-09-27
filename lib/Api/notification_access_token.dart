@@ -1,7 +1,5 @@
 import 'dart:developer';
 
-import 'package:googleapis_auth/auth_io.dart';
-
 class NotificationAccessToken {
   static String? _token;
 
