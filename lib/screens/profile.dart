@@ -173,6 +173,7 @@ class _profileState extends State<profile> {
                     ),
                     ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
                           shape: const StadiumBorder(),
                           minimumSize: const Size(60, 55)),
                       onPressed: () {
@@ -188,10 +189,11 @@ class _profileState extends State<profile> {
                       },
                       label: const Text(
                         "UPDATE",
-                        style: TextStyle(fontSize: 16),
+                        style: TextStyle(fontSize: 16,color: Colors.white),
                       ),
                       icon: const Icon(
                         Icons.edit,
+                        color: Colors.black,
                         size: 28,
                       ),
                     )
@@ -271,5 +273,4 @@ class _profileState extends State<profile> {
       },
     );
   }
-
 }
